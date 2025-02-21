@@ -1,21 +1,20 @@
-const express = require("express");
-const dotenv = require("dotenv").config();
-const mongoose = require("mongoose");
-const cors = require("cors");
-const authRoutes = require("./routes/authRoutes");
+import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import dotenv from "dotenv";
+import authRoutes from "./routes/authRoutes.js";
+import profileRoutes from "./routes/profileRoutes.js";
+
+dotenv.config();
 
 const app = express();
 
-// Connect to Database
-
-app.use(
-  cors({
-    origin: "http://localhost:5173", // Adjust this to your frontend URL
-  })
-);
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/profile", profileRoutes);
 
 const PORT = process.env.PORT || 5000;
 
